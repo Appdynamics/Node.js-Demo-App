@@ -14,13 +14,9 @@ Confirm you're running as root:
 
     $ sudo -i
 
-Git clone the demo-app repo to a web directory:
+Git clone the repo to a web directory:
 
-    $ git clone git@github.com:Appdynamics/demo-app.git demo-app
-
-Create a symlink to this Wine Cellar app:
-
-    $ ln -s demo-app/nodes/winecellar winecellar
+    $ git clone git@github.com:Appdynamics/acme-wine-cellar.git acme-wine-cellar
 
 Install Node.js from [Nodejs.org](http://nodejs.org/download/)
 
