@@ -1,0 +1,24 @@
+<!-- <div class="modal hide fade" id="buy-window<%= _id %>">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Buy <%= name %> - $99.99</h3>
+  </div>
+  <div class="modal-body">
+    <p>Mighty fine wine!</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" onClick="$('#buy-window<%= _id %>').modal('hide'); return false;">Cancel</a>
+    <a href="#" class="btn btn-primary" onClick="return enqueue<%= _id %>()">Buy Now!</a>
+  </div>
+</div>
+-->
+<span class="plain">
+<!-- a data-toggle="modal" href="#buy-window<%= _id %>" class="btn btn-success btn-small" style="float:right;clear:right;margin-right:2px;margin-top:2px"><i class="icon-shopping-cart"></i> Buy</a-->
+<a href="#wines/orders/add/<%= _id %>" class="btn btn-success btn-small" style="float:right;clear:right;margin-right:2px;margin-top:2px"><i class="icon-shopping-cart"></i> Buy</a>
+<a href="#wines/<%= _id %>" class="thumbnail plain" style="text-align: center;">
+    <img style="margin-left: auto;margin-right: 10px;" src="<%= picture === null ? 'pics/generic.jpg' : 'pics/' + picture %>" height="150" width="125" alt="">
+    <h5><%= name %></h5>
+    <%= year %> <%= grapes %><br/>
+    <i class="icon-globe"></i> <%= region %>, <%= country %>
+</a>
+</span>
