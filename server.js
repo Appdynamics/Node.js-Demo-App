@@ -1,14 +1,15 @@
 /*
 // This Javascript snippet must be at the very top of your front controller (first file consumed by the server)
- require("appdynamics").profile({
- controllerHostName: <controller host name>,
- controllerPort: <controller port number>,
- accountName: <AppDynamics account name>, //Required for a controller running in multi-tenant mode.
- accountAccessKey: <AppDynamics account key>, //Required for a controller running in multi-tenant mode.
- applicationName: <app_name>,
- tierName: <tier_name>,
- nodeName:<node_name>, //Prefix to the full node name.
- debug: true //Debug is optional; defaults to false.
+require("appdynamics").profile({
+  controllerHostName: '<controller host name>',
+  controllerPort: <controller port number>, // If SSL, be sure to enable the next line
+  controllerSslEnabled: true|false, // Optional - use if connecting to controller via SSL
+  accountName: '<AppDynamics account name>', // Required for a controller running in multi-tenant mode.
+  accountAccessKey: '<AppDynamics account key>', // Required for a controller running in multi-tenant mode.
+  applicationName: '<app_name>',
+  tierName: '<tier_name>', 
+  nodeName: '<node_name>', // Prefix to the full node name.
+  debug: true|false // Optional - defaults to false.
  });
  */
 
