@@ -43,6 +43,10 @@ Install [Redis](http://redis.io/download) and start Redis. For all *nix systems,
 Install dependent Node.js modules based on package.json declaration
 
     $ npm install  <in-your-winecellar-home>
+    
+Install “request” & “async” modules explicitly
+
+    npm install request async
 
 Install [forever](https://www.npmjs.org/package/forever)
 
