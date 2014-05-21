@@ -1,17 +1,13 @@
-/*
+
 // This Javascript snippet must be at the very top of your front controller (first file consumed by the server)
 require("appdynamics").profile({
-  controllerHostName: '<controller host name>',
-  controllerPort: <controller port number>, // If SSL, be sure to enable the next line
-  controllerSslEnabled: true|false, // Optional - use if connecting to controller via SSL
-  accountName: '<AppDynamics account name>', // Required for a controller running in multi-tenant mode.
-  accountAccessKey: '<AppDynamics account key>', // Required for a controller running in multi-tenant mode.
-  applicationName: '<app_name>',
-  tierName: '<tier_name>', 
-  nodeName: '<node_name>', // Prefix to the full node name.
-  debug: true|false // Optional - defaults to false.
+  controllerHostName: 'staging.demo.appdynamics.com',
+  controllerPort: 8090, // If SSL, be sure to enable the next line
+  applicationName: 'Wine Cellar',
+  tierName: 'wineTier', 
+  nodeName: 'wineNode', // Prefix to the full node name.
  });
- */
+
 
 
 
@@ -30,15 +26,41 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get('/wines', wine.findAll);
-app.get('/wines/:id', wine.findById);
-app.post('/wines', wine.addWine);
-app.put('/wines/:id', wine.updateWine);
-app.delete('/wines/:id', wine.deleteWine);
+app.get('/wines', wrapWithGoogle(wine.findAll));
+app.get('/wines/:id', wrapWithGoogle(wine.findById));
+app.post('/wines', wrapWithGoogle(wine.addWine));
+app.put('/wines/:id', wrapWithGoogle(wine.updateWine));
+app.delete('/wines/:id', wrapWithGoogle(wine.deleteWine));
 
 //uncomment the line below for lab 2
 //app.set('nodetime', nodetime);
 
+
+// Make an sample exit call
+
+function doGoogle(onComplete) {
+
+http.request("http://www.wine.com", function(res) {
+  console.log('STATUS: ' + res.statusCode);
+  console.log('HEADERS: ' + JSON.stringify(res.headers));
+  res.setEncoding('utf8');
+  res.on('data', function (chunk) {
+    console.log('BODY: ' + chunk);
+  });
+  res.on('end', onComplete);
+}).end();
+
+}
+
+function wrapWithGoogle(handler)
+{
+  return function() {
+    var self = this;
+    var args = arguments;
+    doGoogle(function () {
+    handler.apply(self, args);
+  }); };
+}
 
 var server = http.createServer(app);
 
