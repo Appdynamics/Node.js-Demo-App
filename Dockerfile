@@ -19,7 +19,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -yq \
 	mongodb \
 	--no-install-recommends
 
-RUN	git clone --no-checkout https://github.com/Appdynamics/acme-wine-cellar.git /opt/appdynamics/acme-wine-cellar && cd /opt/appdynamics/acme-wine-cellar && npm install
+RUN mkdir -p /opt/appdynamics/acme-wine-cellar
+RUN	git clone --no-checkout git@github.com:Appdynamics/acme-wine-cellar.git /opt/appdynamics/acme-wine-cellar && cd /opt/appdynamics/acme-wine-cellar && npm install
 
 WORKDIR	/opt/appdynamics/acme-wine-cellar
 
