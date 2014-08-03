@@ -2,11 +2,18 @@ var mongo = require('mongodb');
 var redis = require('redis');
 var request = require('request');
 
+var logCB = function (str) {
+  console.log(str);
+};
+
+function log(str) {
+  logCB(str);
+}
 
 // Create Redis client
 var redisClient = redis.createClient();
 redisClient.on('error', function(err) {
-  console.log('Could not connect to Redis');
+  console.error('Could not connect to Redis');
 });
 
 // Create MongoDB client. Use authentication to get access to server status metrics
@@ -15,36 +22,36 @@ var db;
 
 var mongoDb = mongo.connect('mongodb://localhost:27017/winedb', function(err, mongoDb) {
     if(err) return console.error(err);
-    
-    //uncomment the line below for lab 3.2                   
+
+    //uncomment the line below for lab 3.2
     //mongoDb.admin().authenticate('adminuser', 'adminpassword', function(err) {
 
         if(err) return console.error(err);
 
         db = mongoDb;
-        console.log("Connected to 'winedb' database");
+        log("Connected to 'winedb' database");
         db.collection('wines', {safe:true}, function(err, collection) {
             if (err) {
-                console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
+                log("The 'wines' collection doesn't exist. Creating it with sample data...");
                 populateDB();
             }
-        }); 
+        });
 
-    //uncomment the line below for lab 3.2                     
+    //uncomment the line below for lab 3.2
     //});
 });
 
 
 exports.findById = function(req, res) {
     var id = req.params.id;
-    console.log('Retrieving wine: ' + id);
+    log('Retrieving wine: ' + id);
 
     redisClient.get(id, function (err, result) {
         if (err || !result) {
             db.collection('wines', function(err, collection) {
                 collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
                     if (item != null) {
-                        console.log('Found wine in mongodb: ' + JSON.stringify(item));
+                        log('Found wine in mongodb: ' + JSON.stringify(item));
 
                         //sending a custom metric to Nodetime, see http://docs.nodetime.com/#agent-api
                         //uncomment the line below for lab 3.1
@@ -60,13 +67,13 @@ exports.findById = function(req, res) {
 
                         res.send(item);
                     } else {
-                        console.log('Could not find wine in mongodb: ' + id);
+                        log('Could not find wine in mongodb: ' + id);
                     }
                 });
             });
         }
         else {
-            console.log('Found wine in redis: ' + result);
+            log('Found wine in redis: ' + result);
 
             //adding some cpu load show that slow() shows in the cpu profiler -> hotspot
             //uncomment the line below for lab 4
@@ -78,7 +85,7 @@ exports.findById = function(req, res) {
 
 
 
-    
+
 };
 
 exports.findAll = function(req, res) {
@@ -92,13 +99,13 @@ exports.findAll = function(req, res) {
 
 exports.addWine = function(req, res) {
     var wine = req.body;
-    console.log('Adding wine: ' + JSON.stringify(wine));
+    log('Adding wine: ' + JSON.stringify(wine));
     db.collection('wines', function(err, collection) {
         collection.insert(wine, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred'});
             } else {
-                console.log('Success: ' + JSON.stringify(result[0]));
+                log('Success: ' + JSON.stringify(result[0]));
                 res.send(result[0]);
             }
         });
@@ -109,15 +116,15 @@ exports.updateWine = function(req, res) {
     var id = req.params.id;
     var wine = req.body;
     delete wine._id;
-    console.log('Updating wine: ' + id);
-    console.log(JSON.stringify(wine));
+    log('Updating wine: ' + id);
+    log(JSON.stringify(wine));
     db.collection('wines', function(err, collection) {
         collection.update({'_id':new BSON.ObjectID(id)}, wine, {safe:true}, function(err, result) {
             if (err) {
-                console.log('Error updating wine: ' + err);
+                log('Error updating wine: ' + err);
                 res.send({'error':'An error has occurred'});
             } else {
-                console.log('' + result + ' document(s) updated');
+                log('' + result + ' document(s) updated');
                 res.send(wine);
             }
         });
@@ -126,17 +133,21 @@ exports.updateWine = function(req, res) {
 
 exports.deleteWine = function(req, res) {
     var id = req.params.id;
-    console.log('Deleting wine: ' + id);
+    log('Deleting wine: ' + id);
     db.collection('wines', function(err, collection) {
         collection.remove({'_id':new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
-                console.log('' + result + ' document(s) deleted');
+                log('' + result + ' document(s) deleted');
                 res.send(req.body);
             }
         });
     });
+}
+
+exports.setLogCallback = function (logCallback) {
+  logCB = logCallback;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -373,7 +384,7 @@ function slow3(count) {
     if(count < 10000) {
         slow3(count + 1)
     }
-    
+
     var b = 3 + 4;
 }
 
@@ -383,9 +394,8 @@ function slow2() {
 
 function slow() {
     slow3(0);
-    
+
     for(var i = 0; i < 100000000; i++) {
         slow2();
     }
 }
-

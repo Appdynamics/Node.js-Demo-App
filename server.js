@@ -1,10 +1,20 @@
 
+// Set to true to get verbose output from the application.
+var debug = false;
+
+function log(str)
+{
+  if (!debug)
+    return;
+  console.log(str);
+}
+
 // This Javascript snippet must be at the very top of your front controller (first file consumed by the server)
 require("appdynamics").profile({
-  controllerHostName: 'staging.demo.appdynamics.com',
+  controllerHostName: 'localhost',
   controllerPort: 8090, // If SSL, be sure to enable the next line
   applicationName: 'Wine Cellar',
-  tierName: 'wineTier', 
+  tierName: 'wineTier',
   nodeName: 'wineNode', // Prefix to the full node name.
  });
 
@@ -16,6 +26,8 @@ var express = require('express'),
     path = require('path'),
     http = require('http'),
     wine = require('./routes/wines');
+
+wine.setLogCallback(log);
 
 var app = express();
 
@@ -41,11 +53,11 @@ app.delete('/wines/:id', wrapWithGoogle(wine.deleteWine));
 function doGoogle(onComplete) {
 
 http.request("http://www.wine.com", function(res) {
-  console.log('STATUS: ' + res.statusCode);
-  console.log('HEADERS: ' + JSON.stringify(res.headers));
+  log('STATUS: ' + res.statusCode);
+  log('HEADERS: ' + JSON.stringify(res.headers));
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
-    console.log('BODY: ' + chunk);
+    log('BODY: ' + chunk);
   });
   res.on('end', onComplete);
 }).end();
@@ -74,8 +86,8 @@ io.configure(function() {
 
   var RedisStore = require('socket.io/lib/stores/redis');
   io.set('store', new RedisStore({
-    redisPub:redis.createClient(), 
-    redisSub:redis.createClient(), 
+    redisPub:redis.createClient(),
+    redisSub:redis.createClient(),
     redisClient:redis.createClient()
   }));
 });
