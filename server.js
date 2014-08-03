@@ -1,4 +1,3 @@
-
 // Set to true to get verbose output from the application.
 var debug = false;
 
@@ -11,15 +10,12 @@ function log(str)
 
 // This Javascript snippet must be at the very top of your front controller (first file consumed by the server)
 require("appdynamics").profile({
-  controllerHostName: 'localhost',
+  controllerHostName: 'pm4.appdynamics.com',
   controllerPort: 8090, // If SSL, be sure to enable the next line
   applicationName: 'Wine Cellar',
   tierName: 'wineTier',
   nodeName: 'wineNode', // Prefix to the full node name.
  });
-
-
-
 
 //Express initialization & configuration
 var express = require('express'),
@@ -43,10 +39,6 @@ app.get('/wines/:id', wrapWithGoogle(wine.findById));
 app.post('/wines', wrapWithGoogle(wine.addWine));
 app.put('/wines/:id', wrapWithGoogle(wine.updateWine));
 app.delete('/wines/:id', wrapWithGoogle(wine.deleteWine));
-
-//uncomment the line below for lab 2
-//app.set('nodetime', nodetime);
-
 
 // Make an sample exit call
 
