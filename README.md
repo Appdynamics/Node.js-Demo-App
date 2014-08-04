@@ -10,7 +10,7 @@ For any questions/concerns, please reach out to Omed Habib, Dynamic Languages Pr
 Requirements
 -----------------
 * root access
-* AppDynamics 3.8+ Controller
+* AppDynamics 3.9+ Controller
 * An AppDynamics [supported environment](http://docs.appdynamics.com/display/PRO14S/Supported+Environments+and+Versions+for+Node.js)
 * [Git](http://git-scm.com/)
 
@@ -47,9 +47,13 @@ Install dependent Node.js modules based on package.json declaration
 Install Node.js Agent
 -----------------
 
-Follow the instructions on [installing the AppDynamics Node.js Agent](http://docs.appdynamics.com/display/PRO14S/Install+the+App+Agent+for+Node.js).
+From your application root folder, type the following to install the agent:
 
-Be sure to have a 3.8+ controller and insert your variables into the necessary javascript in the head of your front controller. 
+    $ npm install  appdynamics
+
+For further details, follow the instructions on [installing the AppDynamics Node.js Agent](http://docs.appdynamics.com/display/PRO14S/Install+the+App+Agent+for+Node.js).
+
+Be sure to have a 3.9+ controller and insert your variables into the necessary javascript in the head of your front controller. 
 
 ```javascript
 require("appdynamics").profile({
