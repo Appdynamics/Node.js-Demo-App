@@ -8,6 +8,16 @@ function log(str)
   console.log(str);
 }
 
+// Set to true to get verbose output from the application.
+var debug = false;
+
+function log(str)
+{
+  if (!debug)
+    return;
+  console.log(str);
+}
+
 // This Javascript snippet must be at the very top of your front controller (first file consumed by the server)
 require("appdynamics").profile({
   controllerHostName: 'pm4.appdynamics.com',
