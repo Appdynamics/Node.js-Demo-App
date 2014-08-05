@@ -10,7 +10,7 @@
         "redis": "*",
         "async": "^0.7.0",
         "request": "^2.34.0",
-        "appdynamics": "0.1.x",
+        "appdynamics": "3.9.0",
         "mysql": "2.4.2"
     },
     "engines": {
