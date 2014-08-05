@@ -1,19 +1,20 @@
 {
-  "name": "wine-cellar",
-  "description": "Wine Cellar Application",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "express": "3.x",
-    "mongodb": "1.1.8",
-    "socket.io": "0.9.10",
-    "redis": "*",
-    "async": "^0.7.0",
-    "request": "^2.34.0",
-    "appdynamics": "0.1.x"
-  },
-  "engines": {
-    "node": "0.8.4",
-    "npm": "1.1.49"
-  }
+    "name": "wine-cellar",
+    "description": "Wine Cellar Application",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "3.x",
+        "mongodb": "1.1.8",
+        "socket.io": "0.9.10",
+        "redis": "*",
+        "async": "^0.7.0",
+        "request": "^2.34.0",
+        "appdynamics": "0.1.x",
+        "mysql": "2.4.2"
+    },
+    "engines": {
+        "node": "0.8.4",
+        "npm": "1.1.49"
+    }
 }
