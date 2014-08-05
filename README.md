@@ -1,4 +1,4 @@
-ACME Wine Cellar
+ACME Wine Cellar - Node.js Demo
 =============
 
 "ACME Wine Cellar" is a sample CRUD application built with with [Backbone.js](http://backbonejs.org/), [Twitter Bootstrap](http://getbootstrap.com/), [Node.js](http://nodejs.org/), [Express](http://expressjs.com/), [Redis](http://redis.io/) and [MongoDB](https://www.mongodb.org/). The application allows you to browse through a list of wines, as well as add, update, and delete wines.
