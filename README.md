@@ -33,9 +33,12 @@ Install [MongoDB](http://docs.mongodb.org/manual/installation/) and start Mongod
 
     $ service mongodb start
 
-Install MySQL:
+Install MySQL, start MySQL, configure it starts on reboot and complete setup:
 
     $ yum install mysql mysql-server
+    $ service mysqld start
+    $ chkconfig mysqld on
+    $ mysql_secure_installation
 
 Install [Redis](http://redis.io/download) and start Redis. For all *nix systems, use [these](http://redis.io/download) instructions. For Ubuntu, try this:
 
