@@ -34,11 +34,11 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get('/wines', wrapWithGoogle(wine.findAll));
-app.get('/wines/:id', wrapWithGoogle(wine.findById));
-app.post('/wines', wrapWithGoogle(wine.addWine));
-app.put('/wines/:id', wrapWithGoogle(wine.updateWine));
-app.delete('/wines/:id', wrapWithGoogle(wine.deleteWine));
+app.get('/wines', wrapWithError(wrapWithGoogle(wine.findAll)));
+app.get('/wines/:id', wrapWithError(wrapWithGoogle(wine.findById)));
+app.post('/wines', wrapWithError(wrapWithGoogle(wine.addWine)));
+app.put('/wines/:id', wrapWithError(wrapWithGoogle(wine.updateWine)));
+app.delete('/wines/:id', wrapWithError(wrapWithGoogle(wine.deleteWine)));
 
 // Make an sample exit call
 
@@ -62,8 +62,41 @@ function wrapWithGoogle(handler)
     var self = this;
     var args = arguments;
     doGoogle(function () {
+      handler.apply(self, args);
+    }); 
+  };
+}
+
+function wrapWithError(handler) {
+  return function(req, res, next) {
+    var self = this;
+    var args = arguments;
+    // occasionally generate an error
+    if (Math.random() < 0.1 ) {
+      log('ERROR RESPONSE');
+      var error = new Error('Sample BT Error');
+      res.__caughtException__ = error; // (WORK-AROUND)
+      return next(error);
+    }
+    // occasionally slow down
+    if (Math.random() < 0.1) {
+      log('SLOW');
+      setTimeout(function() {
+        handler.apply(self, args);
+      }, 10000);
+      return;
+    }
+    // occasionally stall out
+    if (Math.random() < 0.1) {
+      log('STALL');
+      setTimeout(function() {
+        handler.apply(self, args);
+      }, 50000);
+      return;
+    }
+    // normal response
     handler.apply(self, args);
-  }); };
+  };
 }
 
 var server = http.createServer(app);
