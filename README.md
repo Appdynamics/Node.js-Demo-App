@@ -33,6 +33,10 @@ Install [MongoDB](http://docs.mongodb.org/manual/installation/) and start Mongod
 
     $ service mongodb start
 
+Install MySQL:
+
+    $ yum install mysql mysql-server
+
 Install [Redis](http://redis.io/download) and start Redis. For all *nix systems, use [these](http://redis.io/download) instructions. For Ubuntu, try this:
 
     $ sudo apt-get install -y python-software-properties
