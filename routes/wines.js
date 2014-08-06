@@ -46,24 +46,28 @@ var mongoDb = mongo.connect('mongodb://localhost:27017/winedb', function(err, mo
 
 exports.findById = function(req, res) {
 
-
     /*
     var mysql = require('mysql');
 
     var connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'omed',
+        password: 'your_password',
         database: 'mysql'
     });
 
     connection.connect();
 
     connection.query('SELECT * from user', function(err, rows, fields) {
-        var mysql = require('mysql');
         if (err) throw err;
-
     });
+
+    // 10% of the time, throw in a slow query
+    if (Math.random() < 0.1) {
+        connection.query('SELECT SLEEP(5)', function(err, rows, fields) {
+            if (err) throw err;
+        });
+    }
 
     connection.end();
     /* */
