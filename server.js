@@ -1,5 +1,6 @@
 // Set to true to get verbose output from the application.
-var debug = false;
+var debug = true;
+var dummy;
 
 function log(str)
 {
@@ -71,6 +72,7 @@ function wrapWithError(handler) {
   return function(req, res, next) {
     var self = this;
     var args = arguments;
+    
     // occasionally generate an error
     if (Math.random() < 0.1 ) {
       log('ERROR RESPONSE');
@@ -94,9 +96,28 @@ function wrapWithError(handler) {
       }, 50000);
       return;
     }
+    // occasionally bog down the CPU
+    if (Math.random() < 0.02) {
+      log('CPU PINNED');
+      cpuDelay();
+      handler.apply(self, args);
+    }
+
     // normal response
     handler.apply(self, args);
   };
+}
+
+function cpuDelay() {
+  dummy = [];
+  var now = Date.now(), then = now;
+  while (then - now < 5000) {
+    then = Date.now();
+    dummy.push(0);
+    if (dummy.length > 100) {
+      dummy.splice(0, 10);
+    }
+  }
 }
 
 var server = http.createServer(app);
